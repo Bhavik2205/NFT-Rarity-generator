@@ -9,23 +9,11 @@ import cors from "cors";
 import rarity2 from "./collection2rarity.js";
 
 const app = express();
-const router = express.Router();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-app.get("/api/details/", async (req, res) => {
-  const data = await products
-    .find()
-    .then((res) => {
-      res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(404).json(err.message);
-    });
-  //sres.json(data);
-});
 //connecting to Database
 mongoose
   .connect(process.env.DB_CONNECTION, {
@@ -39,6 +27,7 @@ mongoose
     console.error({ message: "error" });
   });
 
+  /*
 const NFTfetching = async (req, res) => {
   for (var i = 476; i < 500; i++) {
     const response = await fetch(
@@ -61,44 +50,14 @@ const NFTfetching = async (req, res) => {
   }
 };
 //NFTfetching();
-
-/*
-const Moralis = require("moralis/node");
-const { timer } = require("rxjs");
-
-const serverUrl = ""; //Moralis Server Url here
-const appId = ""; //Moralis Server App ID here
-Moralis.start({ serverUrl, appId });
-
-const resolveLink = (url) => {
-  if (!url || !url.includes("ipfs://")) return url;
-  return url.replace("ipfs://", "https://gateway.ipfs.io/ipfs/");
-};
-
-const collectionAddress = ""; //Collection Address Here
-const collectionName = ""; //CollectioonName Here
 */
-
-async function generateRarity() {
+const generateRarity = async(req, res) => {
   let allNFTs = [];
   const totalNum = 500;
 
   for (let i = 1; i < 501; i++) {
-    /*const NFTs = await Moralis.Web3API.token.getAllTokenIds({
-      address: collectionAddress,
-      offset: i,
-    });*/
     const response = await NFT.findOne({ id: i });
-    //console.log(JSON.parse(data));
     allNFTs = allNFTs.concat(response);
-    //NFTs = i;
-    //const response = await fetch(
-    //  `https://croseaio.infura-ipfs.io/ipfs/QmRiNzAaAgqiET6uBkpuKE8e9gKfyH7qisioA8d3Adsdfj/${i}.json`
-    //);
-    //const data = JSON.stringify(response);
-    //const data = await response.json();
-    //console.log(allNFTs.attributes);
-    //await timer(6000);
   }
 
   let metadata;
@@ -232,6 +191,7 @@ async function generateRarity() {
 
   return true;
 }
+
 generateRarity()
   .then((result) => {
     console.log(result);
