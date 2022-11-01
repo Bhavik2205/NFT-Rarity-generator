@@ -40,10 +40,8 @@ mongoose
   });
 
 const NFTfetching = async (req, res) => {
-  for (var i = 476; i < 500; i++) {
-    const response = await fetch(
-      `https://croodleape.com/jungle-meta/${i}.json`
-    );
+  for (var i = 2999; i < 3000; i++) {
+    const response = await fetch(`https://primeapecro.com/ipfs/json/${i}.json`);
     const data = await response.json();
     const saved = await NFT.create({
       id: data.id,
@@ -81,14 +79,16 @@ const collectionName = ""; //CollectioonName Here
 
 async function generateRarity() {
   let allNFTs = [];
-  const totalNum = 500;
+  const totalNum = 3000;
 
-  for (let i = 1; i < 501; i++) {
+  for (let i = 0; i < 3000; i++) {
     /*const NFTs = await Moralis.Web3API.token.getAllTokenIds({
       address: collectionAddress,
       offset: i,
     });*/
-    const response = await NFT.findOne({ id: i });
+    const response = await NFT.findOne({
+      image: `https://primeapecro.com/ipfs/images/${i}.png`,
+    });
     //console.log(JSON.parse(data));
     allNFTs = allNFTs.concat(response);
     //NFTs = i;
@@ -102,9 +102,9 @@ async function generateRarity() {
   }
 
   let metadata;
-  for (var i = 0; i < 500; i++) {
-    metadata = allNFTs.map((e) => console.log(e));
-    console.log(metadata);
+  for (var i = 0; i < 3000; i++) {
+    metadata = allNFTs.map((e) => e.attributes);
+    //console.log(metadata);
   }
   //console.log(metadata);
   let tally = { TraitCount: {} };
@@ -232,6 +232,7 @@ async function generateRarity() {
 
   return true;
 }
+
 generateRarity()
   .then((result) => {
     console.log(result);
