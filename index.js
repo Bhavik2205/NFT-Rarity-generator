@@ -7,20 +7,23 @@ import fetch from "node-fetch";
 import rarity from "./rarity.model.js";
 import cors from "cors";
 import rarity2 from "./collection2rarity.js";
-import fs from 'fs';
+import fs from "fs";
 
 const app = express();
 
 app.use(function (request, response, next) {
   response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  response.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 //app.use(cors());
 app.post("/generate", async (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
+  res.set("Access-Control-Allow-Origin", "*");
   try {
     console.log("request received");
     let allNFTs = [];
@@ -135,23 +138,27 @@ app.post("/generate", async (req, res) => {
     for (let i = 0; i < nftArr.length; i++) {
       console.log(nftArr[i]);
     }
-    fs.writeFile("myFile.json", JSON.stringify(nftArr), (err) => {
-      // Checking for errors
-      if (err) throw err;
+    fs.writeFile(
+      "./raritygenerator/public/myFile.json",
+      JSON.stringify(nftArr),
+      (err) => {
+        // Checking for errors
+        if (err) throw err;
 
-      res
-        .status(200)
-        .json({ Success: `Rarity generated for ${nftArr.length}` });
-      console.log("Done writing"); // Success
-    });
+        res
+          .status(200)
+          .json({ Success: `Rarity generated for ${nftArr.length}` });
+        console.log("Done writing"); // Success
+      }
+    );
     return true;
   } catch (error) {
     console.log(error);
-    res.status(419).json({ error: error});
+    res.status(419).json({ error: error });
   }
 });
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT);
 //connecting to Database
 mongoose
   .connect(process.env.DB_CONNECTION, {
