@@ -1,12 +1,12 @@
 import "./App.css";
 import axios from "axios";
 import { useState } from "react";
-import myFile from "./myFile.json";
 
 function App() {
   const [Start, setStart] = useState("");
   const [loading, setLoading] = useState(false);
   const [Stop, setStop] = useState("");
+  const [Hash, setHash] = useState("");
   const [Link, setLink] = useState("");
 
   const onButtonClick = () => {
@@ -27,11 +27,14 @@ function App() {
   const handleSubmit = async (event) => {
     console.log("Please wait, your request is getting processed");
     event.preventDefault(); // 👈️ prevent page refresh
-
+    /*    const queryParams = new URLSearchParams(window.location.search);
+    const term = await queryParams.get("hash");
+    console.log(term);*/
     try {
       setLoading(true);
       const result = await axios
-        .post("http://localhost:3000/generate", {
+        .post(`http://localhost:3000/generate/`, {
+          hash: Hash,
           start: Start,
           stop: Stop,
           link: Link,
@@ -43,8 +46,13 @@ function App() {
         })
         .catch((err) => {
           console.log(err.message);
-          setLoading(false);
-          window.alert("Something went wrong");
+          if (err.message === "Request failed with status code 401") {
+            setLoading(false);
+            window.alert("Your are not Authorised to process the data");
+          } else {
+            setLoading(false);
+            window.alert("Something went wrong");
+          }
         });
     } catch (error) {
       console.log(error.message);
@@ -54,11 +62,12 @@ function App() {
     console.log("Start 👉️", Start);
     console.log("Stop 👉️", Stop);
     console.log("Link 👉️", Link);
-
+    console.log("Hash 👉️", Hash);
     // 👇️ clear all input values in the form
+    /*
     setStart("");
     setStop("");
-    setLink("");
+    setLink("");*/
   };
   return (
     <div className="container">
@@ -74,6 +83,16 @@ function App() {
           <header className="App-header">
             <button onClick={onButtonClick}>Download PDF</button>
             <form onSubmit={handleSubmit}>
+              <h4>
+                Hash:
+                <input
+                  id="hash"
+                  name="Hash"
+                  type="text"
+                  onChange={(event) => setHash(event.target.value)}
+                  value={Hash}
+                />
+              </h4>
               <h3>
                 Starting Index:
                 <input

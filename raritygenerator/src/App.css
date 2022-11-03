@@ -13,6 +13,11 @@
   color: white;
 }
 
+#hash {
+  margin-left: 13px;
+  padding: 12px 20px;
+}
+
 #link {
   margin-left: 90px;
   width: 100%;
@@ -40,11 +45,21 @@
   font-size: 1.5rem;
 }
 
+#hash {
+  box-sizing: border-box;
+  font-size: 0.78rem;
+  width: 80%;
+}
+
 h3 {
   text-align: left;
 }
 
-button{
+h4 {
+  text-align: left;
+}
+
+button {
   font-size: xx-large;
   padding-left: 15.4rem;
   padding-right: 15.4rem;
@@ -52,7 +67,7 @@ button{
   padding-bottom: 5px;
   margin: 3px;
   border: 8px 8px;
-  border-color: #3d5af1 transparent #3d5af1 transparent ;
+  border-color: #3d5af1 transparent #3d5af1 transparent;
   background-color: grey;
   cursor: pointer;
 }
@@ -80,10 +95,10 @@ button{
 
 @keyframes spin-anim {
   0% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -94,7 +109,7 @@ button:hover {
   box-shadow: 0 0 50px #39ff14;
 }
 
-h2{
+h2 {
   color: white;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }

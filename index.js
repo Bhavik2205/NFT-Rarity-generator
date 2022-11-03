@@ -8,6 +8,8 @@ import rarity from "./rarity.model.js";
 import cors from "cors";
 import rarity2 from "./collection2rarity.js";
 import fs from "fs";
+import { equal } from "assert";
+import { error } from "console";
 
 const app = express();
 
@@ -22,7 +24,18 @@ app.use(function (request, response, next) {
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 //app.use(cors());
-app.post("/generate", async (req, res) => {
+
+const authorization = async (req, res, next) => {
+  if (req.body.hash === process.env.Hash) {
+    console.log("Authorised to process the data");
+    next();
+  } else {
+    console.log("Unauthorised access requested");
+    res.status(401).json("Unauthorised");
+  }
+};
+
+app.post("/generate/", authorization, async (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
   try {
     console.log("request received");
